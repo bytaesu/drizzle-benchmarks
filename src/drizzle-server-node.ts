@@ -13,8 +13,8 @@ import { customers, details, orders, products } from './schema';
 
 const numCPUs = os.cpus().length;
 
-const pool = new pg.native!.Pool({ connectionString: process.env.DATABASE_URL });
-const db = drizzle({ client: pool, schema, relations, logger: false });
+const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL, min: 10, max: 10 });
+const db = drizzle({ client: pool, relations, useJitMappers:true });
 
 const p1 = db.query.customers
   .findMany({
